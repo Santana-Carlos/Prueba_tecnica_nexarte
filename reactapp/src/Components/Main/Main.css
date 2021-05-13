@@ -1,0 +1,33 @@
+.o-logo {
+  max-height: 2.5rem;
+  max-width: 100%;
+  margin: 1.5rem 0 0.5rem;
+}
+
+.o-form-container {
+  display: flex;
+  flex-direction: column;
+  min-width: none;
+  max-width: 22rem;
+  margin: 0 0 0 auto;
+  padding: 0 2.5rem 2.5rem;
+  background-color: #fff;
+  border-radius: 12px;
+}
+
+.o-label {
+  font-size: large;
+  font-weight: 500;
+  margin-left: 0.2rem;
+}
+
+.o-option {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-bottom: 1px solid #3c3c3c;
+}
+
+.o-option-img {
+  max-height: 6rem;
+}
