@@ -1,0 +1,76 @@
+[
+	{
+		"title":"Marca",
+		"action":"https:\/\/www.ssangyong.com.co\/marca\/"
+	},
+	{
+		"title":"Portafolio",
+		"action":"#",
+		"subitems":
+			[
+				{
+					"subtitle":"Tivoli",
+					"action":"https:\/\/www.ssangyong.com.co\/tivoli\/",
+					"img":"https:\/\/www.ssangyong.com.co\/wp-content\/uploads\/2020\/09\/img2-catalogo-tivoli.png",
+					"price":"$68.990.000"
+				},
+				{
+					"subtitle":"KorandoC",
+					"action":"https:\/\/www.ssangyong.com.co\/tivoli\/",
+					"img":"https:\/\/www.ssangyong.com.co\/wp-content\/uploads\/2020\/09\/img2-catalogo-tivoli.png",
+					"price":"$78.900.000"
+				},
+				{
+					"subtitle":"Rexton G4",
+					"action":"https:\/\/www.ssangyong.com.co\/rextong4\/",
+					"img":"https:\/\/www.ssangyong.com.co\/wp-content\/uploads\/2020\/09\/img2-catalogo-rexton-g4.png",
+					"price":"$139.900.000"
+				},
+				{
+					"subtitle":"Rexton Sports",
+					"action":"https:\/\/www.ssangyong.com.co\/rextonsports\/",
+					"img":"https:\/\/www.ssangyong.com.co\/wp-content\/uploads\/2020\/09\/img2-catalogo-rexton-sports.png",
+					"price":"$111.900.000"
+				}
+			]
+	},
+	{
+		"title":"Tienda Virtual",
+		"action":"https:\/\/tienda.ssangyong.com.co\/repuestos\/busqueda\/"
+	},
+	{
+		"title":"Ayuda",
+		"action":"https:\/\/www.ssangyong.com.co\/ayuda\/"
+	}
+]
+
+data[1].subitems.map((x) => {})
+
+
+
+cotizacions:
+- id               (int) PK
+- modelo           (string)
+- precio           (string)
+- nombre_cotizante (string)
+- email_cotizante  (string)
+- numero_cotizante (int)
+- fecha_creacion   (date)
+- departamento_id  (int) FK
+- ciudad_id        (int) FK
+
+departamentos:
+- id     (int) PK
+- nombre (string max100)
+
+ciudads:
+- id     (int) PK
+- nombre (string max100)
+
+
+
+%ruta%/Departamento                         (GET)
+%ruta%/CiudadDepartamento/{departamento_id} (GET)
+%ruta%/Cotizacion                           (POST)
+
+
