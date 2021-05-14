@@ -1,5 +1,5 @@
 .o-logo {
-  max-height: 2.5rem;
+  max-height: 2rem;
   max-width: 100%;
   margin: 1.5rem 0 0.5rem;
 }
@@ -10,15 +10,18 @@
   min-width: none;
   max-width: 22rem;
   margin: 0 0 0 auto;
-  padding: 0 2.5rem 2.5rem;
+  padding: 0 2.5rem;
   background-color: #fff;
   border-radius: 12px;
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.18);
 }
 
 .o-label {
   font-size: large;
   font-weight: 500;
   margin-left: 0.2rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .o-option {
@@ -30,4 +33,52 @@
 
 .o-option-img {
   max-height: 6rem;
+}
+
+.o-dobleinput-container {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.o-dobleinput {
+  width: 48%;
+}
+
+.o-button-post {
+  height: 2.6rem;
+  width: 9rem;
+  margin: 1rem auto 2rem 0;
+}
+
+.o-button-diag {
+  height: 2.6rem;
+  width: 7rem;
+  margin: 0.5rem;
+}
+
+.o-terms {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  text-anchor: end;
+  font-size: smaller;
+  color: #3c3c3c;
+  margin: 0.5rem 0;
+}
+
+button.o-link {
+  color: #0d67c0;
+  height: fit-content;
+  padding-top: 2px;
+  text-anchor: end;
+  background: none;
+  border: none;
+}
+button.o-link:hover {
+  font-weight: 500;
+  text-shadow: 0 0 1px #0d67c0;
 }
