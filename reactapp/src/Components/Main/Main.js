@@ -17,12 +17,12 @@ import {
   GreenButton,
   StyledCheckbox,
 } from "../StyledComponents";
-import background from "../../Assets/logo.png";
+import logo from "../../Assets/logo.png";
 import "./Main.css";
 
 class Main extends Component {
-  constructor(props) {
-    super(props);
+  constructor() {
+    super();
     this.state = {
       temp_modelo: "",
       temp_precio: "",
@@ -36,6 +36,7 @@ class Main extends Component {
       api_depart: [],
       api_ciudad: [],
       show_diag: false,
+      reqtext: false,
       diag_title: "",
       diag_message: "",
       loading: true,
@@ -84,7 +85,6 @@ class Main extends Component {
         return response.json();
       })
       .then((data) => {
-        console.log(data);
         if (data.success) this.setState({ api_ciudad: data.ciudades });
       })
       .catch((error) => {
@@ -92,10 +92,35 @@ class Main extends Component {
       });
   };
 
+  preCallApi = () => {
+    if (
+      this.state.temp_modelo === "" ||
+      this.state.temp_precio === "" ||
+      this.state.temp_nombre === "" ||
+      this.state.temp_email === "" ||
+      this.state.temp_numero === "" ||
+      this.state.temp_depart === "" ||
+      this.state.temp_ciudad === ""
+    )
+      this.setState({
+        reqtext: true,
+        show_diag: true,
+        diag_title: "Datos insuficientes",
+        diag_message:
+          "Para poder realizar la cotización, debe llenar todos los campos.",
+      });
+    else if (this.state.set_terms) this.callApiPost();
+    else
+      this.setState({
+        show_diag: true,
+        diag_title: "Acepta los terminos",
+        diag_message:
+          "Para poder realizar la cotización, debes aceptar los terminos de tratamiento de datos.",
+      });
+  };
+
   callApiPost = () => {
-    this.setState({
-      loading: true,
-    });
+    this.setState({ loading: true });
     const data = {
       modelo: this.state.temp_modelo,
       precio: this.state.temp_precio,
@@ -117,7 +142,6 @@ class Main extends Component {
         return response.json();
       })
       .then((data) => {
-        console.log(data);
         if (data.success)
           this.setState(
             {
@@ -125,14 +149,27 @@ class Main extends Component {
               show_diag: true,
               diag_title: "Cotización realizada",
               diag_message:
-                "Los datos de la cotización se han enviado satisfactoriamente",
+                "Los datos de la cotización se han enviado satisfactoriamente.",
             },
             this.clearTemp
           );
+        else
+          this.setState({
+            loading: false,
+            show_diag: true,
+            diag_title: "Cotización existente",
+            diag_message:
+              "Esta cotización ya se ha realizado anteriormente el día de hoy.",
+          });
       })
       .catch((error) => {
         console.log(error);
-        this.setState({ loading: false });
+        this.setState({
+          loading: false,
+          show_diag: true,
+          diag_title: "Error :(",
+          diag_message: "Hubo un error en el servidor, contacta soporte.",
+        });
       });
   };
 
@@ -146,6 +183,7 @@ class Main extends Component {
       temp_ciudad: "",
       temp_depart: "",
       set_terms: false,
+      reqtext: false,
       api_ciudad: [],
     });
   };
@@ -166,10 +204,19 @@ class Main extends Component {
         });
         break;
       case "input_nombre":
-        this.setState({ temp_nombre: value });
+        const key = value.charCodeAt(value.length - 1);
+        if (
+          (key > 64 && key < 91) ||
+          (key > 96 && key < 123) ||
+          key === 32 ||
+          key === 209 ||
+          key === 241 ||
+          value === ""
+        )
+          if (value.length < 100) this.setState({ temp_nombre: value });
         break;
       case "input_email":
-        this.setState({ temp_email: value });
+        if (value.length < 100) this.setState({ temp_email: value });
         break;
       case "input_numero":
         if (value.length <= 10) this.setState({ temp_numero: value });
@@ -191,8 +238,8 @@ class Main extends Component {
   render() {
     return (
       <Container maxWidth="lg">
-        <div style={{ padding: "0 2rem 0 1.7rem" }}>
-          <img src={background} alt="logo_ssangyong" className="o-logo" />
+        <div style={{ padding: "0 4rem 0 3.7rem" }}>
+          <img src={logo} alt="logo_ssangyong" className="o-logo" />
         </div>
 
         <div className="o-form-container">
@@ -200,6 +247,7 @@ class Main extends Component {
 
           <div className="o-label">{"Selecciona un modelo"}</div>
           <Select
+            error={this.state.reqtext && this.state.temp_modelo === ""}
             variant="outlined"
             name="input_modelo"
             value={this.state.temp_modelo}
@@ -229,6 +277,7 @@ class Main extends Component {
 
           <div className="o-label">{"Nombre completo"}</div>
           <StyledTextField
+            error={this.state.reqtext && this.state.temp_nombre === ""}
             variant="outlined"
             name="input_nombre"
             value={this.state.temp_nombre}
@@ -238,6 +287,7 @@ class Main extends Component {
 
           <div className="o-label">{"Email"}</div>
           <StyledTextField
+            error={this.state.reqtext && this.state.temp_email === ""}
             variant="outlined"
             name="input_email"
             value={this.state.temp_email}
@@ -247,6 +297,7 @@ class Main extends Component {
 
           <div className="o-label">{"Número celular"}</div>
           <StyledTextField
+            error={this.state.reqtext && this.state.temp_numero === ""}
             variant="outlined"
             type="number"
             name="input_numero"
@@ -259,6 +310,7 @@ class Main extends Component {
             <div className="o-dobleinput">
               <div className="o-label">{"Departamento"}</div>
               <Select
+                error={this.state.reqtext && this.state.temp_depart === ""}
                 variant="outlined"
                 name="input_depart"
                 value={this.state.temp_depart}
@@ -276,6 +328,7 @@ class Main extends Component {
             <div className="o-dobleinput">
               <div className="o-label">{"Ciudad"}</div>
               <Select
+                error={this.state.reqtext && this.state.temp_ciudad === ""}
                 variant="outlined"
                 name="input_ciudad"
                 value={this.state.temp_ciudad}
@@ -320,7 +373,7 @@ class Main extends Component {
           </div>
 
           <div className="o-button-post">
-            <BlackButton onClick={this.callApiPost}>
+            <BlackButton onClick={this.preCallApi}>
               {"Enviar datos"}
             </BlackButton>
           </div>
@@ -330,12 +383,13 @@ class Main extends Component {
           disableBackdropClick
           disableEscapeKeyDown
           open={this.state.show_diag}
-          maxWidth={false}
         >
           <DialogTitle style={{ textAlign: "center" }}>
             {this.state.diag_title}
           </DialogTitle>
-          <DialogContent>{this.state.diag_message}</DialogContent>
+          <DialogContent style={{ textAlign: "center", padding: "2rem 1rem" }}>
+            {this.state.diag_message}
+          </DialogContent>
           <DialogActions style={{ justifyContent: "center" }}>
             <div className="o-button-diag">
               <GreenButton
