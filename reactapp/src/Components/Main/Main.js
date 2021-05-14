@@ -32,6 +32,7 @@ class Main extends Component {
       temp_ciudad: "",
       temp_depart: "",
       set_terms: false,
+      api_terms: "",
       api_modelo: [],
       api_depart: [],
       api_ciudad: [],
@@ -68,6 +69,21 @@ class Main extends Component {
       })
       .catch((error) => {
         this.setState({ loading: false });
+        console.log(error);
+      });
+    fetch(
+      "https://baconipsum.com/api/?type=meat-and-filler&paras=4&start-with-lorem=1&format=json",
+      {
+        method: "GET",
+      }
+    )
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        this.setState({ api_terms: data });
+      })
+      .catch((error) => {
         console.log(error);
       });
   }
@@ -364,7 +380,9 @@ class Main extends Component {
                 this.setState({
                   show_diag: true,
                   diag_title: "Política de Tratamiento de Datos",
-                  diag_message: "Politica de tratamiento",
+                  diag_message:
+                    "Política de Tratamiento de Datos, (el siguiente es un texto autogenerado cargado desde otra API) " +
+                    this.state.api_terms,
                 })
               }
             >
@@ -384,13 +402,21 @@ class Main extends Component {
           disableEscapeKeyDown
           open={this.state.show_diag}
         >
-          <DialogTitle style={{ textAlign: "center" }}>
+          <DialogTitle style={{ textAlign: "center", paddingBottom: "2rem" }}>
             {this.state.diag_title}
           </DialogTitle>
-          <DialogContent style={{ textAlign: "center", padding: "2rem 1rem" }}>
+          <DialogContent
+            style={{
+              textAlign: "center",
+              padding: "0 2rem",
+              maxHeight: "15rem",
+            }}
+          >
             {this.state.diag_message}
           </DialogContent>
-          <DialogActions style={{ justifyContent: "center" }}>
+          <DialogActions
+            style={{ justifyContent: "center", paddingTop: "2rem" }}
+          >
             <div className="o-button-diag">
               <GreenButton
                 onClick={() =>
